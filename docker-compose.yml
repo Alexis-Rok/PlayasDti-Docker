@@ -113,19 +113,6 @@ services:
       - "PGADMIN_CONFIG_LOGIN_BANNER='Authorised users only!'"
       - "PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=10"
 
-  grafana:
-    hostname: grafana
-    container_name: grafana_inspira
-    image: grafana/grafana:latest
-    ports:
-      - 3000:3000
-    networks:
-      - default
-    expose:
-      - "3000"
-    volumes:
-      - grafana-volume:/var/lib/grafana/data
-
 networks:
   default:
     ipam:
@@ -135,4 +122,3 @@ networks:
 volumes:
   mongo-db: ~
   postgres-db: ~
-  grafana-volume: ~

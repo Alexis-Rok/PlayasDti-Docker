@@ -1,0 +1,1206 @@
+{
+	"info": {
+		"_postman_id": "96fccf03-0330-4e4a-a702-5b944562552f",
+		"name": "PlayasDTI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20240190"
+	},
+	"item": [
+		{
+			"name": "1-Service Group",
+			"item": [
+				{
+					"name": "List all Service Groups",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "{{service}}",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:4041/iot/services",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services"
+							]
+						},
+						"description": "This example lists all provisioned services by making a GET request to the `/iot/services/` endpoint.\n\nThe response includes all the defaults associated with each service group such as the `entity_type` and any default commands or attribute mappings."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Service Group",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "{{service}}",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "{{service-path}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{iota-protocol}}://{{iota-host}}:{{iota-port}}/iot/services/?resource=/iot/d&apikey={{apikey-ul}}",
+							"protocol": "{{iota-protocol}}",
+							"host": [
+								"{{iota-host}}"
+							],
+							"port": "{{iota-port}}",
+							"path": [
+								"iot",
+								"services",
+								""
+							],
+							"query": [
+								{
+									"key": "resource",
+									"value": "/iot/d",
+									"description": "The path that the IoT Agent had been listening on"
+								},
+								{
+									"key": "apikey",
+									"value": "{{apikey-ul}}"
+								}
+							]
+						},
+						"description": "This example removes a provisioned service group by making a DELETE request to the `/iot/services/` endpoint.\n\nIt means that requests to `http://iot-agent:7896/iot/d?i=<device_id>&k=4jggokgpepnvsb2uv4s40d59ov`\n(where the IoT Agent is listening for **Northbound** communications) should no longer be processed by the IoT Agent. \nThe `apiKey` and `resource` parameters must be supplied in order to identify the service group to be deleted."
+					},
+					"response": []
+				},
+				{
+					"name": "iot service config para agente json",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"services\": [\n   {\n     \"apikey\":      \"{{tokenAcceso}}\",\n     \"cbroker\":     \"{{host}}:1026\",\n     \"entity_type\": \"playa\",\n     \"resource\":    \"/iot/json\"\n   }\n ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:4041/iot/services",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The **CRUD** operations for a service group map on to the expected HTTP verbs under the `/iot/services` endpoint\n\n* **Create** - HTTP POST\n* **Read** - HTTP GET\n* **Update** - HTTP PUT\n* **Delete** - HTTP DELETE\n\nUse the `resource` and `apikey` parameters to uniquely identify a service group.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "3-Sensores",
+			"item": [
+				{
+					"name": "1. sensor mq9 horizonteDelSol",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"devices\": [\n        {\n            \"device_id\": \"mq9006\",\n            \"entity_name\": \"urn:ngsi-ld:HorizonteDelSol:006\",\n            \"entity_type\": \"playa\",\n            \"timezone\": \"America/Argentina/Buenos_Aires\",\n            \"attributes\": [\n                {\n                    \"object_id\": \"af\",\n                    \"name\": \"aforo\",\n                    \"type\": \"string\"\n                },\n                {\n                    \"object_id\": \"ba\",\n                    \"name\": \"bandera\",\n                    \"type\": \"string\"\n                },\n                {\n                    \"object_id\": \"dv\",\n                    \"name\": \"dirViento\",\n                    \"type\": \"string\"\n                }\n            ],\n            \"static_attributes\": [\n                {\n                    \"name\": \"refPlaya\",\n                    \"type\": \"Relationship\",\n                    \"value\": \"urn:ngsi-ld:HorizonteDelSol:006\"\n                },\n                {\n                    \"name\": \"category\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensor\"\n                },\n                {\n                    \"name\": \"function\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensing\"\n                },\n                {\n                    \"name\": \"modelName\",\n                    \"type\": \"string\",\n                    \"value\": \"Mq 9\"\n                },\n                {\n                    \"name\": \"brandName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"manufacturerName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"controlledProperty\",\n                    \"type\": \"string\",\n                    \"value\": [\n                        \"aforo\",\n                        \"bandera\",\n                        \"dirViento\"\n                    ]\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. sensor mq9 San Bernardo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"devices\": [\n        {\n            \"device_id\": \"mq9002\",\n            \"entity_name\": \"urn:ngsi-ld:SanBernardo:006\",\n            \"entity_type\": \"playa\",\n            \"timezone\": \"America/Argentina/Buenos_Aires\",\n            \"attributes\": [\n                {\n                    \"object_id\": \"af\",\n                    \"name\": \"aforo\",\n                    \"type\": \"string\"\n                },\n                {\n                    \"object_id\": \"ba\",\n                    \"name\": \"bandera\",\n                    \"type\": \"string\"\n                },\n                {\n                    \"object_id\": \"dv\",\n                    \"name\": \"dirViento\",\n                    \"type\": \"string\"\n                }\n            ],\n            \"static_attributes\": [\n                {\n                    \"name\": \"refPlaya\",\n                    \"type\": \"Relationship\",\n                    \"value\": \"urn:ngsi-ld:SanBernardo:006\"\n                },\n                {\n                    \"name\": \"category\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensor\"\n                },\n                {\n                    \"name\": \"function\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensing\"\n                },\n                {\n                    \"name\": \"modelName\",\n                    \"type\": \"string\",\n                    \"value\": \"Mq 9\"\n                },\n                {\n                    \"name\": \"brandName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"manufacturerName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"controlledProperty\",\n                    \"type\": \"string\",\n                    \"value\": [\n                        \"aforo\",\n                        \"bandera\",\n                        \"dirViento\"\n                    ]\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. sensor mq9 LA Lucila",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"devices\": [\n        {\n            \"device_id\": \"mq9004\",\n            \"entity_name\": \"urn:ngsi-ld:LaLucila:006\",\n            \"entity_type\": \"playa\",\n            \"timezone\": \"America/Argentina/Buenos_Aires\",\n            \"attributes\": [\n                {\n                    \"object_id\": \"af\",\n                    \"name\": \"aforo\",\n                    \"type\": \"string\"\n                },\n                {\n                    \"object_id\": \"ba\",\n                    \"name\": \"bandera\",\n                    \"type\": \"string\"\n                },\n                {\n                    \"object_id\": \"dv\",\n                    \"name\": \"dirViento\",\n                    \"type\": \"string\"\n                }\n            ],\n            \"static_attributes\": [\n                {\n                    \"name\": \"refPlaya\",\n                    \"type\": \"Relationship\",\n                    \"value\": \"urn:ngsi-ld:LaLucila:006\"\n                },\n                {\n                    \"name\": \"category\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensor\"\n                },\n                {\n                    \"name\": \"function\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensing\"\n                },\n                {\n                    \"name\": \"modelName\",\n                    \"type\": \"string\",\n                    \"value\": \"Mq 9\"\n                },\n                {\n                    \"name\": \"brandName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"manufacturerName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"controlledProperty\",\n                    \"type\": \"string\",\n                    \"value\": [\n                        \"aforo\",\n                        \"bandera\",\n                        \"dirViento\"\n                    ]\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. sensor dht11 horizonteDelSol",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"devices\": [\n        {\n            \"device_id\": \"dht11006\",\n            \"entity_name\": \"urn:ngsi-ld:HorizonteDelSol:006\",\n            \"entity_type\": \"playa\",\n            \"timezone\": \"America/Argentina/Buenos_Aires\",\n            \"attributes\": [\n                {\n                    \"object_id\": \"p\",\n                    \"name\": \"parking\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"mp\",\n                    \"name\": \"maxParking\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"ao\",\n                    \"name\": \"altOla\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"t\",\n                    \"name\": \"temperatura\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"vv\",\n                    \"name\": \"velViento\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"u\",\n                    \"name\": \"uv\",\n                    \"type\": \"Integer\"\n                }\n            ],\n            \"static_attributes\": [\n                {\n                    \"name\": \"refPlaya\",\n                    \"type\": \"Relationship\",\n                    \"value\": \"urn:ngsi-ld:HorizonteDelSol:006\"\n                },\n                {\n                    \"name\": \"category\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensor\"\n                },\n                {\n                    \"name\": \"function\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensing\"\n                },\n                {\n                    \"name\": \"modelName\",\n                    \"type\": \"string\",\n                    \"value\": \"Dht 11\"\n                },\n                {\n                    \"name\": \"brandName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"manufacturerName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"controlledProperty\",\n                    \"type\": \"string\",\n                    \"value\": [\n                        \"parking\",\n                        \"maxParking\",\n                        \"altOla\",\n                        \"t\",\n                        \"velViento\",\n                        \"uv\"\n                    ]\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. sensor dht11 SanBernardo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"devices\": [\n        {\n            \"device_id\": \"dht11002\",\n            \"entity_name\": \"urn:ngsi-ld:SanBernardo:006\",\n            \"entity_type\": \"playa\",\n            \"timezone\": \"America/Argentina/Buenos_Aires\",\n            \"attributes\": [\n                {\n                    \"object_id\": \"p\",\n                    \"name\": \"parking\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"mp\",\n                    \"name\": \"maxParking\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"ao\",\n                    \"name\": \"altOla\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"t\",\n                    \"name\": \"temperatura\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"vv\",\n                    \"name\": \"velViento\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"u\",\n                    \"name\": \"uv\",\n                    \"type\": \"Integer\"\n                }\n            ],\n            \"static_attributes\": [\n                {\n                    \"name\": \"refPlaya\",\n                    \"type\": \"Relationship\",\n                    \"value\": \"urn:ngsi-ld:SanBernardo:006\"\n                },\n                {\n                    \"name\": \"category\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensor\"\n                },\n                {\n                    \"name\": \"function\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensing\"\n                },\n                {\n                    \"name\": \"modelName\",\n                    \"type\": \"string\",\n                    \"value\": \"Dht 11\"\n                },\n                {\n                    \"name\": \"brandName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"manufacturerName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"controlledProperty\",\n                    \"type\": \"string\",\n                    \"value\": [\n                        \"parking\",\n                        \"maxParking\",\n                        \"altOla\",\n                        \"t\",\n                        \"velViento\",\n                        \"uv\"\n                    ]\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. sensor dht11 LaLucila",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"devices\": [\n        {\n            \"device_id\": \"dht11004\",\n            \"entity_name\": \"urn:ngsi-ld:LaLucila:006\",\n            \"entity_type\": \"playa\",\n            \"timezone\": \"America/Argentina/Buenos_Aires\",\n            \"attributes\": [\n                {\n                    \"object_id\": \"p\",\n                    \"name\": \"parking\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"mp\",\n                    \"name\": \"maxParking\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"ao\",\n                    \"name\": \"altOla\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"t\",\n                    \"name\": \"temperatura\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"vv\",\n                    \"name\": \"velViento\",\n                    \"type\": \"Integer\"\n                },\n                {\n                    \"object_id\": \"u\",\n                    \"name\": \"uv\",\n                    \"type\": \"Integer\"\n                }\n            ],\n            \"static_attributes\": [\n                {\n                    \"name\": \"refPlaya\",\n                    \"type\": \"Relationship\",\n                    \"value\": \"urn:ngsi-ld:LaLucila:006\"\n                },\n                {\n                    \"name\": \"category\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensor\"\n                },\n                {\n                    \"name\": \"function\",\n                    \"type\": \"string\",\n                    \"value\": \"Sensing\"\n                },\n                {\n                    \"name\": \"modelName\",\n                    \"type\": \"string\",\n                    \"value\": \"Dht 11\"\n                },\n                {\n                    \"name\": \"brandName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"manufacturerName\",\n                    \"type\": \"string\",\n                    \"value\": \"Arduino\"\n                },\n                {\n                    \"name\": \"controlledProperty\",\n                    \"type\": \"string\",\n                    \"value\": [\n                        \"parking\",\n                        \"maxParking\",\n                        \"altOla\",\n                        \"t\",\n                        \"velViento\",\n                        \"uv\"\n                    ]\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Device JSON Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"type": "text",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"type": "text",
+								"value": "/{{service-path}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}:4041/iot/devices/dht11001",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices",
+								"dht11001"
+							]
+						},
+						"description": "This example removes a provisioned device by making a DELETE request to the `/iot/services/<device-id>` endpoint.\n\nThe device attributes will no longer be mapped and commands can no longer be sent to the device.\nIf the device is making active measurements, they will still be handled with default values\nif the associated service has not been deleted."
+					},
+					"response": []
+				},
+				{
+					"name": "Listar sensores",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"type": "text",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"type": "text",
+								"value": "/{{service-path}}"
+							},
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						},
+						"description": "This example removes a provisioned device by making a DELETE request to the `/iot/services/<device-id>` endpoint.\n\nThe device attributes will no longer be mapped and commands can no longer be sent to the device.\nIf the device is making active measurements, they will still be handled with default values\nif the associated service has not been deleted."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Enviar dato sensor",
+			"item": [
+				{
+					"name": "1. enviar data desde sensor mq9 formato json HorizonteDelSol",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const ch4Labo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"ch4Labo1\", ch4Labo1)\r",
+									"\r",
+									"const coLabo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"coLabo1\", coLabo1)\r",
+									"\r",
+									"const lpgLabo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"lpgLabo1\", lpgLabo1)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"af\": \"alto\",\r\n    \"ba\": \"malisima\",\r\n    \"dv\" : \"N\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:7896/iot/json?k={{tokenAcceso}}&i=mq9006",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "7896",
+							"path": [
+								"iot",
+								"json"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{tokenAcceso}}"
+								},
+								{
+									"key": "i",
+									"value": "mq9006"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. enviar data desde sensor mq9 formato json San Bernardo",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const ch4Labo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"ch4Labo1\", ch4Labo1)\r",
+									"\r",
+									"const coLabo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"coLabo1\", coLabo1)\r",
+									"\r",
+									"const lpgLabo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"lpgLabo1\", lpgLabo1)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"af\": \"bajo\",\r\n    \"ba\": \"prohibido\",\r\n    \"dv\" : \"O\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:7896/iot/json?k={{tokenAcceso}}&i=mq9002",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "7896",
+							"path": [
+								"iot",
+								"json"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{tokenAcceso}}"
+								},
+								{
+									"key": "i",
+									"value": "mq9002"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. enviar data desde sensor mq9 LaLucila",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const ch4Labo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"ch4Labo1\", ch4Labo1)\r",
+									"\r",
+									"const coLabo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"coLabo1\", coLabo1)\r",
+									"\r",
+									"const lpgLabo1 = Math.floor(Math.random()*100+1)\r",
+									"pm.globals.set(\"lpgLabo1\", lpgLabo1)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"af\": \"bajo\",\r\n    \"ba\": \"dudoso\",\r\n    \"dv\" : \"S\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:7896/iot/json?k={{tokenAcceso}}&i=mq9004",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "7896",
+							"path": [
+								"iot",
+								"json"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{tokenAcceso}}"
+								},
+								{
+									"key": "i",
+									"value": "mq9004"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. enviar data desde sensor dht11formato json HorizonteDelSol",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"p\": 100,\r\n    \"mp\": 150,\r\n    \"ao\": 2.5,\r\n    \"t\": 7.2,\r\n    \"vv\": 50,\r\n    \"u\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:7896/iot/json?k={{tokenAcceso}}&i=dht11006",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "7896",
+							"path": [
+								"iot",
+								"json"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{tokenAcceso}}"
+								},
+								{
+									"key": "i",
+									"value": "dht11006"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. enviar data desde sensor dht11formato json San Bernardo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}",
+								"type": "text"
+							},
+							{
+								"key": "Fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"p\": 5,\r\n    \"mp\": 15,\r\n    \"ao\": 0.5,\r\n    \"t\": 19.0,\r\n    \"vv\": 5,\r\n    \"u\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:7896/iot/json?k={{tokenAcceso}}&i=dht11002",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "7896",
+							"path": [
+								"iot",
+								"json"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{tokenAcceso}}"
+								},
+								{
+									"key": "i",
+									"value": "dht11002"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. enviar data desde sensor dht11formato json LaLucila Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"value": "{{service}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"p\": 10,\r\n    \"mp\": 25,\r\n    \"ao\": 1.2,\r\n    \"t\": 22.2,\r\n    \"vv\": 33,\r\n    \"u\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:7896/iot/json?k={{tokenAcceso}}&i=dht11004",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "7896",
+							"path": [
+								"iot",
+								"json"
+							],
+							"query": [
+								{
+									"key": "k",
+									"value": "{{tokenAcceso}}"
+								},
+								{
+									"key": "i",
+									"value": "dht11004"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create service JSON Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fiware-service",
+								"type": "text",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"type": "text",
+								"value": "{{service-path}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"services\": [\r\n    {\r\n      \"apikey\": \"{{tokenAcceso}}\",\r\n      \"entity_type\": \"device\",\r\n      \"protocol\": [ \"IoTA-JSON\" ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{iota-port}}/iot/services",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{iota-port}}",
+							"path": [
+								"iot",
+								"services"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2- Crear entidades",
+			"item": [
+				{
+					"name": "1. Crear entidad Balneario Horizonte Del Sol",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"urn:ngsi-ld:HorizonteDelSol:006\",\n    \"type\": \"playa\",\n    \"address\": {\n        \"type\": \"PostalAddress\",\n        \"value\": {\n            \"streetAddress\": \"Av. de los Trabajadores 4044\",\n            \"addressRegion\": \"Provincia de Buenos Aires\",\n            \"addressLocality\": \"Mar del plata\",\n            \"postalCode\": \"7600\"\n        }\n    },\n    \"location\": {\n        \"type\": \"geo:json\",\n        \"value\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                -38.0974118,\n                -57.5487577\n            ]\n        }\n    },\n    \"name\": {\n        \"type\": \"Text\",\n        \"value\": \"Balneario Horizonte Del Sol\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Crear entidad Playa la lucila",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"urn:ngsi-ld:LaLucila:006\",\n    \"type\": \"playa\",\n    \"address\": {\n        \"type\": \"PostalAddress\",\n        \"value\": {\n            \"streetAddress\": \"muelle,\",\n            \"addressRegion\": \"Provincia de Buenos Aires\",\n            \"addressLocality\": \"La Lucila del Mar\",\n            \"postalCode\": \"78000\"\n        }\n    },\n    \"location\": {\n        \"type\": \"geo:json\",\n        \"value\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                -36.658661,\n                -56.680761\n            ]\n        }\n    },\n    \"name\": {\n        \"type\": \"Text\",\n        \"value\": \"Playa La Lucila\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Crear entidad San bernardo",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"urn:ngsi-ld:SanBernardo:006\",\n    \"type\": \"playa\",\n    \"address\": {\n        \"type\": \"PostalAddress\",\n        \"value\": {\n            \"streetAddress\": \"Av. Costanera 2800-2898\",\n            \"addressRegion\": \"Provincia de Buenos Aires\",\n            \"addressLocality\": \"San Bernardo\",\n            \"postalCode\": \"7200\"\n        }\n    },\n    \"location\": {\n        \"type\": \"geo:json\",\n        \"value\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                -36.686364,\n                -56.678997\n            ]\n        }\n    },\n    \"name\": {\n        \"type\": \"Text\",\n        \"value\": \"San Bernardo\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todas las entidades (playas)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/entities?options=keyValues",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "keyValues"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscripciones",
+			"item": [
+				{
+					"name": "crear subscription de entidades device a NIFI dispositivos mq9 Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"description\": \"Notify me of sense data\",\n  \"subject\": {\n    \"entities\": [{\"idPattern\": \".*\", \"type\": \"playa\"}]\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://fiware-draco:5050/v2/notify\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get subscriptions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "{{service}}",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar subscription",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "{{service}}"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/{{service-path}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"description\": \"Notify me of sense data\",\n  \"subject\": {\n    \"entities\": [{\"idPattern\": \".*\", \"type\": \"playa\"}],\n    \"condition\": {\n      \"attrs\": [\".*\"]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://fiware-draco:5050/v2/notify\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions/62a6a1ad545329f5504ffeae",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions",
+								"62a6a1ad545329f5504ffeae"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
